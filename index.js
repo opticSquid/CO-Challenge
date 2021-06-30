@@ -16,11 +16,11 @@ app.engine(
   "hbs",
   handlebars({
     extname: "hbs",
-    layoutsDir: `${__dirname}/Views/Layouts`,
+    layoutsDir: `${__dirname}/views/layouts`,
     defaultLayout: "main",
   })
 );
-app.use(express.static(__dirname + "/Public"));
+app.use(express.static(__dirname + "/public"));
 
 /**Adding express Middlewares */
 app.use(express.json());
