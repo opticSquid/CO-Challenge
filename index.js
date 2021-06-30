@@ -23,11 +23,15 @@ app.use("/", require("./Routes/routes"));
 /**Starting the server and making it listen to a port */
 app.listen(port, async () => {
   console.log(`Server running on ${port}`);
-  await mongoose.connect(process.env.DBURI, {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  console.log("Database Connected!");
+  try {
+    await mongoose.connect(process.env.DBURI, {
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Database Connected!");
+  } catch (e) {
+    console.log("Connection to database could not be established!");
+    console.error("Reason: \n",e);
+  }
 });
-
