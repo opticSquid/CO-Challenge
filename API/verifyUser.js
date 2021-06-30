@@ -1,13 +1,13 @@
 const router = require("express").Router();
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const jwt = require("../Middleware/jwt");
+const Passhash = require("../Middleware/Passhash");
 const unVerifieduserDB = require("../Database/unverifed-user");
 const verifieduserDB = require("../Database/verified-user");
 const activeUserDB = require("../Database/active-user");
 const validateJWT = (req, res, next) => {
   const emailJWT = req.params.emailtoken;
   try {
-    let user2Bverified = jwt.verify(emailJWT, process.env.EMAILTOKEN);
+    let user2Bverified = jwt.Verify(emailJWT, process.env.EMAILTOKEN);
     console.log("Verified user through jwt: ", user2Bverified);
     res.locals.user = user2Bverified;
     next();
@@ -26,15 +26,9 @@ const findtheunverifiedAccount = async (req, res, next) => {
     res.status(401).end();
   }
 };
-const hashPassword = async (password) => {
-  const saltrounds = 10;
-  const hash = await bcrypt.hash(password, saltrounds);
-  return hash;
-};
-
 const addVerified2DB = async (req, res, next) => {
   try {
-    let hashedPassword = await hashPassword(res.locals.user.Password);
+    let hashedPassword = await Passhash.Hash(res.locals.user.Password);
     let userDoc = {
       Email: res.locals.user.Email,
       Name: res.locals.user.Name,
@@ -59,7 +53,7 @@ const deleteUnverifiedAccountfromCollection = async (req, res, next) => {
   }
 };
 const authToken = (email, name, ip) => {
-  let token = jwt.sign(
+  let token = jwt.Sign(
     { Email: email, Name: name, IP: ip },
     process.env.AUTHTOKEN
   );

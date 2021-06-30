@@ -2,7 +2,7 @@ const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const DBusers = require("../Database/unverifed-user");
-const jwt = require("jsonwebtoken");
+const jwt = require("../Middleware/jwt");
 const newUser = (req, res, next) => {
   /**request body:
    * {
@@ -24,13 +24,14 @@ const addUnverifiedUser2DB = async (req, res, next) => {
     Password: res.locals.User.Password,
     UID: uid,
   };
-  res.locals.EmailJWT = jwt.sign(
-    UserDetails2bpackedinJWT,
-    process.env.EMAILTOKEN,
-    {
-      expiresIn: 900,
-    }
-  );
+  // res.locals.EmailJWT = jwt.sign(
+  //   UserDetails2bpackedinJWT,
+  //   process.env.EMAILTOKEN,
+  //   {
+  //     expiresIn: 900,
+  //   }
+  // );
+  res.locals.EmailJWT = jwt.Sign(UserDetails2bpackedinJWT,process.env.EMAILTOKEN,900);
   try {
     let ResultfromDB = await DBusers.AddUnverifiedUsers({
       UID: uid,
@@ -95,7 +96,7 @@ const response2Client = (req, res) => {
   starttimer(res.locals.uid);
   res.status(200).json({
     response:
-      "An email has been sent to your provided email containing the link to verify your account. Please remember to check your spam/trash folder if you donot find it in your inbox. Verify this email to access all the features of the application.",
+      "An email has been sent to your provided email containing the link to verify your account. Please remember to check your spam or trash folder if you donot find it in your inbox. Verify this email to access all the features of the application.",
   });
 };
 router.post(

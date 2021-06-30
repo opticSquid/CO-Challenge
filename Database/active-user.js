@@ -7,7 +7,7 @@ const startSession = async (data) => {
     console.log("Session started\n", data);
     return { status: "Session started for the provided user", error: null };
   } catch (e) {
-    console.error("Session could not be started for the user\n", data);
+    console.error("Session could not be started for the user\n", data,"\nerror: ",e);
     return { status: "Session did not start", error: e };
   }
 };
