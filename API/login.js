@@ -66,8 +66,8 @@ const add2ActiveUser = async (req, res) => {
   let clientIP = req.ip;
   console.log("Client IP address", clientIP);
   let auth = authToken(
-    res.locals.verifieduser.Email,
-    res.locals.verifieduser.Name,
+    res.locals.verifieduser.user[0].Email,
+    res.locals.verifieduser.user[0].Name,
     clientIP
   );
   try {
