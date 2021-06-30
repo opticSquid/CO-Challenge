@@ -5,10 +5,22 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const handlebars = require("express-handlebars");
 const app = express();
 
 /**Setting port variable */
 const port = process.env.PORT || 5000;
+
+app.set("view engine", "hbs");
+app.engine(
+  "hbs",
+  handlebars({
+    extname: "hbs",
+    layoutsDir: `${__dirname}/Views/Layouts`,
+    defaultLayout: "main",
+  })
+);
+app.use(express.static(__dirname + "/Public"));
 
 /**Adding express Middlewares */
 app.use(express.json());
@@ -16,7 +28,6 @@ app.use(express.urlencoded({ extended: true }));
 
 /**Adding cors to open for all end points */
 app.use(cors());
-
 /**Adding Route end points */
 app.use("/", require("./Routes/routes"));
 

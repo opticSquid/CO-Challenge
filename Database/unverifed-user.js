@@ -14,7 +14,7 @@ const addUnverifiedUsers = async (data) => {
 };
 /**
  * Delets the unverified user account from database.
- * @param {string} uid 
+ * @param {string} uid
  * @returns {Object}
  */
 const deleteUnverifiedUsers = async (uid) => {
@@ -31,4 +31,27 @@ const deleteUnverifiedUsers = async (uid) => {
     };
   }
 };
-module.exports = { AddUnverifiedUsers: addUnverifiedUsers, DeleteUnverifiedUsers: deleteUnverifiedUsers };
+const findUnverifiedUser = async (uid) => {
+  try {
+    let user = await unverifiedUser
+      .findOne({ UID: uid })
+      .select({ _id: 0, UID: 1 });
+    console.log("User in database: ", user);
+    return {
+      status: "User found in database good to add in verified User collection",
+      error: null,
+    };
+  } catch (e) {
+    console.error(
+      `User with given UID= ${uid} does not exist in DB.`,
+      "\nError:\t",
+      e
+    );
+    return { status: "User not found in database", error: e };
+  }
+};
+module.exports = {
+  AddUnverifiedUsers: addUnverifiedUsers,
+  DeleteUnverifiedUsers: deleteUnverifiedUsers,
+  FindUnverifiedUser: findUnverifiedUser,
+};

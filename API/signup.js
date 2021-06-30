@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
-const DBusers = require("../Database/users");
+const DBusers = require("../Database/unverifed-user");
 const jwt = require("jsonwebtoken");
 const newUser = (req, res, next) => {
   /**request body:
@@ -87,7 +87,7 @@ const starttimer = async (uid) => {
       let deletedUser = await DBusers.DeleteUnverifiedUsers(uid);
       console.log("Deleted an unverified account from DB=>\n", deletedUser);
     } catch (e) {
-      console.error("Could not delete an unverified account from DB=>\n", e);
+      console.error("User has already been verified =>\n", e);
     }
   }, 900000);
 };
