@@ -16,9 +16,9 @@ const startSession = async (data) => {
     return { status: "Session did not start", error: e };
   }
 };
-const deleteSession = async (token,ip) => {
+const deleteSession = async (token, ip) => {
   try {
-    let session = await activeUser.deleteOne({ auth_token: token, IP:ip });
+    let session = await activeUser.deleteOne({ auth_token: token, IP: ip });
     console.log(`Session deleted ${session}`);
     return { status: "user logged out", error: null };
   } catch (e) {
@@ -26,4 +26,24 @@ const deleteSession = async (token,ip) => {
     return { status: "log out failed ", error: e };
   }
 };
-module.exports = { StartSession: startSession, DeleteSession:deleteSession };
+const findSession = async (ip, token) => {
+  console.log("IP: ", ip, " token: ", token);
+  try {
+    let session = await activeUser
+      .find({ IP: ip, auth_token: token })
+      .select({ _id: 0, auth_token: 1 });
+    console.log("Session found, token: ", session[0]);
+    return { status: "Session Found", token: session[0], error: null };
+  } catch (e) {
+    console.log(
+      `Session from ip: ${ip} having auth: ${token} is not found in existing sessions! error:\n`,
+      e
+    );
+    return { status: "Session not found", token: null, error: e };
+  }
+};
+module.exports = {
+  StartSession: startSession,
+  DeleteSession: deleteSession,
+  FindSession: findSession,
+};
