@@ -17,4 +17,35 @@ const addorModifyProfile = async (data) => {
     return { status: "New work profile not created", data: null, error: e };
   }
 };
-module.exports = { CreateProfile: addorModifyProfile };
+const findSchedule = async (email, day) => {
+  try {
+    let workSchedule = await workProfile
+      .find({ Email: email })
+      .select({ _id: 0, work_days: 1 });
+    console.log("Total week schedule: ", workSchedule[0].work_days);
+    if (day !== undefined) {
+      return {
+        status: "Found the day's work profile",
+        data: workSchedule[0].work_days[day],
+        error: null,
+      };
+    } else {
+      return {
+        status: "Found the week's work profile",
+        data: workSchedule[0].work_days,
+        error: null,
+      };
+    }
+  } catch (e) {
+    console.error("Error in finding schedule, ", e);
+    return {
+      status: "Could not find day's work profile",
+      daya: null,
+      error: e,
+    };
+  }
+};
+module.exports = {
+  CreateProfile: addorModifyProfile,
+  FindSchedule: findSchedule,
+};
