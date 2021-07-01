@@ -3,6 +3,10 @@ const jwt = require("../Middleware/jwt");
 const sessionDB = require("../Database/active-user");
 const logout = (req, res, next) => {
   let authToken = req.header("auth-token");
+  if(authToken===undefined)
+  {
+    res.status(400).json({response: "Provide auth-token header"});
+  }
   console.log("token: ", authToken);
   let openjwt = jwt.Verify(authToken, process.env.AUTHTOKEN);
   console.log("Opened JWT: ", openjwt);
