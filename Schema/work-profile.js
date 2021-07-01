@@ -6,14 +6,42 @@ let workProfile = new schema({
     required: true,
     unique: true,
   },
-  work_days: [
-    {
-      day_name: String,
+  work_days: {
+    monday: {
       start: String,
       end: String,
       list_of_blocked_apps: [String],
-    }
-    // Don't put a comma here
-  ],
+    },
+    tuesday: {
+      start: String,
+      end: String,
+      list_of_blocked_apps: [String],
+    },
+    wednesday: {
+      start: String,
+      end: String,
+      list_of_blocked_apps: [String],
+    },
+    thursday: {
+      start: String,
+      end: String,
+      list_of_blocked_apps: [String],
+    },
+    friday: {
+      start: String,
+      end: String,
+      list_of_blocked_apps: [String],
+    },
+    saturday: {
+      start: String,
+      end: String,
+      list_of_blocked_apps: [String],
+    },
+    sunday: {
+      start: String,
+      end: String,
+      list_of_blocked_apps: [String],
+    },
+  },
 });
 module.exports = mongoose.model("workProfile", workProfile);
