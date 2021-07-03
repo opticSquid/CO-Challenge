@@ -96,7 +96,7 @@ const response2Client = (req, res) => {
   starttimer(res.locals.uid);
   res.status(200).json({
     response:
-      "An email has been sent to your provided email containing the link to verify your account. Please remember to check your spam or trash folder if you donot find it in your inbox. Verify this email to access all the features of the application.",
+      "An email has been sent to your provided email with the link to verify your account. Please remember to check your spam or trash folder if you do not find it in your inbox. Verify this email to access all the features of the application.",
   });
 };
 router.post(
