@@ -83,7 +83,8 @@ const add2ActiveUser = async (req, res, next) => {
   }
 };
 const responsd2User = (req, res) => {
-  res.render("signup", {
+  res.status(200).json({
+    response: "Email verified successfully",
     Name: res.locals.user.Name,
     Email: res.locals.user.Email,
     Token: res.locals.auth,
